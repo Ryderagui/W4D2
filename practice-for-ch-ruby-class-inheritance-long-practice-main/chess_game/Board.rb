@@ -15,7 +15,7 @@ class Board
 
     def initialize(grid = nil)
         @null_piece = NullPiece.instance
-        grid ||= Board.starting_board
+        grid ||= self.starting_board
         grid.each do |row|
             row.map! do |ele|
                 if ele == nil
@@ -29,7 +29,7 @@ class Board
         
     end
 
-    def self.starting_board
+    def starting_board
         null_piece = nil
         # starting_pos: top row = black: Rook0,0, Knight0,1, Bishop0,2, Queen0,3. King0,4, Bishop0,5, knight0,6, rook0,7
                         #send to top row : pawns x 8 (1, 0..7)
@@ -89,9 +89,20 @@ class Board
         board[pos] = piece 
     end
 
-    def checkmate?(color)
-
-    
+    def checkmate?(color) #white
+        self.grid.each do |row|
+            row.each do |piece|
+                if piece.color == color
+                    if !piece.valid_moves.empty?
+                        p piece.pos
+                        p piece.valid_moves
+                        p piece
+                        return false
+                    end
+                end
+            end
+        end
+        return true
     end
 
     def in_check?(color)
@@ -158,11 +169,15 @@ end
 if $PROGRAM_NAME == __FILE__
     nb = Board.new
     # # d = Display.new(nb)
-    # nb.move_piece(:black,[1,3],[3,3])
-    # nb.move_piece(:white, [7,5],[3,1])
-    # piece = nb[3,1]
-    # p nb
-    # # d.render
+    nb.move_piece(:white,[6,5],[5,5])
+    nb.move_piece(:white,[6,6], [4,6])
+    nb.move_piece(:black, [1,4],[2,4])
+    nb.move_piece(:black, [0,3],[4,7])
+    p nb.checkmate?(:white)
+    p nb
+    p pawn = nb[6,7]
+    p pawn.moves
+    p pawn.valid_moves
     # p piece
     # p piece.pos
     # p piece.moves
@@ -170,8 +185,14 @@ if $PROGRAM_NAME == __FILE__
     # # b = nb[0,5]
     # p nb.in_check?(:white)
     # p nb.in_check?(:black)
-    copy = nb.dup
-    copy.move_piece(:black,[1,0],[3,0])
-    p copy
-    p nb
+    # copy = nb.dup
+
+    # p pawn = nb[1,0]
+    # p pawn.moves
+    # p pawn.valid_moves
+    # copy.move_piece(:black,[1,0],[3,0])
+    # p copy
+    # p nb
+
+
 end

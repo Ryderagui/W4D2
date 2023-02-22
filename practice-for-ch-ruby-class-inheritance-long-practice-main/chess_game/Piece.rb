@@ -1,3 +1,6 @@
+# require_relative "Board.rb"
+require 'byebug'
+
 class Piece
     attr_reader :color,:board,:pos
     attr_accessor :board
@@ -35,21 +38,15 @@ class Piece
     end
 
     def valid_moves
-        # # Call self.moves
-        # # dub the board. make a move.
-        # # verify we are not in check after we make that move
-        # # if we aren't in check, move is valid 
-        # # output an array of all these valid moves 
-        # valids = []
-        # possible_moves = self.moves
-        
-        # possible_moves.select do |move|
-        #     new_board = self.baord.dup
 
-
-
+        valids = []
+        possible_moves = self.moves
+        possible_moves.each do |move|
+            copy = self.board.dup
+            copy.move_piece(self.color,self.pos,move)
+            valids << move if !copy.in_check?(self.color)
+        end
+        valids
     end
-
-
 
 end
