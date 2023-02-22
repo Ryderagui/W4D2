@@ -6,7 +6,7 @@ class Employee
         @salary = salary
         @boss = boss
     end
-    attr_reader :name,:title,:salary
+    attr_reader :name,:title,:salary,:boss
     
     def bonus(multiplier)
         bonus = self.salary * multiplier
