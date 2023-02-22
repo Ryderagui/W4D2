@@ -9,18 +9,28 @@ require_relative "Rook.rb"
 
 class Board
     attr_reader :grid
-    def self.null_positions
-        empty_array = []
-        (2..5).each do |i|
-            (0..7).each do |j|
-                empty_array << [i,j]
+    
+
+    
+
+    def initialize(grid = nil)
+        @null_piece = NullPiece.instance
+        grid ||= Board.starting_board
+        grid.each do |row|
+            row.map! do |ele|
+                if ele == nil
+                    @null_piece
+                else
+                    ele
+                end
             end
         end
-        empty_array
+        @grid = grid 
+        
     end
 
-    def initialize
-        @null_piece = NullPiece.instance
+    def self.starting_board
+        null_piece = nil
         # starting_pos: top row = black: Rook0,0, Knight0,1, Bishop0,2, Queen0,3. King0,4, Bishop0,5, knight0,6, rook0,7
                         #send to top row : pawns x 8 (1, 0..7)
                         # 4 rows of null pieces(2..5,0..7)
@@ -31,13 +41,15 @@ class Board
             King.new(color[0], self, [0,4]), Bishop.new(color[0], self, [0,5]),Knight.new(color[0], self, [0,6]), Rook.new(color[0], self, [0,7])]
         black_pawns = [Pawn.new(color[0], self, [1,0]), Pawn.new(color[0], self, [1,1]), Pawn.new(color[0], self, [1,2]), Pawn.new(color[0], self, [1,3]),
         Pawn.new(color[0], self, [1,4]), Pawn.new(color[0], self, [1,5]), Pawn.new(color[0], self, [1,6]), Pawn.new(color[0], self, [1,7])]
-        null_pieces = Array.new(4) {Array.new(8,@null_piece)}
+        null_pieces = Array.new(4) {Array.new(8,null_piece)}
         # null_pos = Board.null_positions
         white_pieces = [Rook.new(color[1],self,[7,0]), Knight.new(color[1], self, [7,1]), Bishop.new(color[1], self, [7,2]), Queen.new(color[1], self, [7,3]),
             King.new(color[1], self, [7,4]), Bishop.new(color[1], self, [7,5]),Knight.new(color[1], self, [7,6]), Rook.new(color[1], self, [7,7])]
         white_pawns = [Pawn.new(color[1], self, [6,0]), Pawn.new(color[1], self, [6,1]), Pawn.new(color[1], self, [6,2]), Pawn.new(color[1], self, [6,3]),
         Pawn.new(color[1], self, [6,4]), Pawn.new(color[1], self, [6,5]), Pawn.new(color[1], self, [6,6]), Pawn.new(color[1], self, [6,7])] 
-        @grid = [black_pieces,black_pawns]+null_pieces+[white_pawns,white_pieces]
+        grid = [black_pieces,black_pawns]+null_pieces+[white_pawns,white_pieces]
+
+        grid
     end
 
     def [](x,y)
@@ -78,6 +90,7 @@ class Board
     end
 
     def checkmate?(color)
+
     
     end
 
@@ -112,7 +125,30 @@ class Board
     end
 
     def dup
-        @grid.dup
+        grid = []
+        self.grid.each do |row|
+            temp_row = []
+            row.each do |piece|
+                piece_class = piece.class
+                color = piece.color
+                pos = piece.pos
+                if piece_class != NullPiece
+                    new_piece = piece_class.new(color,self,pos)
+                else
+                    new_piece = @null_piece
+                end
+                temp_row << new_piece
+            end
+            grid << temp_row
+        end
+        new_board = Board.new(grid)
+
+        new_board.grid.each do |row|
+            row.each do |piece|
+                piece.board = new_board
+            end
+        end
+        new_board
     end
 
 
@@ -121,17 +157,21 @@ end
 
 if $PROGRAM_NAME == __FILE__
     nb = Board.new
-    # d = Display.new(nb)
-    nb.move_piece(:black,[1,3],[3,3])
-    nb.move_piece(:white, [7,5],[3,1])
-    piece = nb[3,1]
+    # # d = Display.new(nb)
+    # nb.move_piece(:black,[1,3],[3,3])
+    # nb.move_piece(:white, [7,5],[3,1])
+    # piece = nb[3,1]
+    # p nb
+    # # d.render
+    # p piece
+    # p piece.pos
+    # p piece.moves
+    # # q = nb[0,3]
+    # # b = nb[0,5]
+    # p nb.in_check?(:white)
+    # p nb.in_check?(:black)
+    copy = nb.dup
+    copy.move_piece(:black,[1,0],[3,0])
+    p copy
     p nb
-    # d.render
-    p piece
-    p piece.pos
-    p piece.moves
-    # q = nb[0,3]
-    # b = nb[0,5]
-    p nb.in_check?(:white)
-    p nb.in_check?(:black)
 end
