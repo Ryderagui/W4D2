@@ -11,4 +11,8 @@ class Rook < Piece
     def move_dirs
         directions = [:horz, :vert]
     end
+
+    def symbol 
+        :R
+    end
 end

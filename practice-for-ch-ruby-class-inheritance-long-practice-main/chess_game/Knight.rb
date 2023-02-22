@@ -14,4 +14,8 @@ class Knight < Piece
     def move_diffs
         possible_moves = [[1,2],[2,1],[-1,-2],[-2,-1],[2,-1],[-1,2],[-2,1],[1,-2]]
     end
+
+    def symbol 
+        :N
+    end
 end

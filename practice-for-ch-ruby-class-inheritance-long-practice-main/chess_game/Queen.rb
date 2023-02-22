@@ -11,5 +11,9 @@ class Queen < Piece
         directions = [:horz, :vert, :diag]
     end
 
+    def symbol
+        :Q 
+    end
+
 
 end

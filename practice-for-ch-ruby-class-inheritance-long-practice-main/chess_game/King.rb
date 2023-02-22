@@ -11,4 +11,8 @@ class King < Piece
     def move_diffs
         possible_moves = [[1,1],[1,-1],[-1,-1],[-1,1],[1,0],[-1,0],[0,1],[0,-1]]
     end
+
+    def symbol 
+        :K 
+    end
 end

@@ -12,4 +12,7 @@ class Bishop < Piece
         direction = [:diag]
     end
 
+    def symbol 
+        :B
+    end
 end
