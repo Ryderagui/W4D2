@@ -48,12 +48,14 @@ class Board
         @grid[x][y] = value
     end
 
-    def move_piece(start_pos,end_pos)
+    def move_piece(color,start_pos,end_pos)
         x,y = start_pos
         w,z = end_pos
         raise "Empty Square" if self.[](x,y) == nil
-        
         raise "That piece cannot go there" if !valid_pos?(end_pos)
+        if self[x,y].color != color
+            return 
+        end 
 
         self[w,z] = self[x,y]
         self[x,y] = @null_piece
@@ -92,8 +94,17 @@ class Board
     def dup
         @grid.dup
     end
-     
 
 
     
+end
+
+if $PROGRAM_NAME == __FILE__
+    nb = Board.new
+    nb.move_piece(:white,[1,4],[3,4])
+    q = nb[0,3]
+    # p q.moves
+    b = nb[0,5]
+    # p b.moves
+
 end

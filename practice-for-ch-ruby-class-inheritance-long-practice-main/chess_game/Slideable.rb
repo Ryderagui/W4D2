@@ -49,47 +49,64 @@ module Slideable
                 vertical << [x-i,y]
             end
         end
+        #diagonal
         diagonal = []
-        max_coor = self.pos.max
-        min_coor = self.pos.min
-        (1..max_coor).each do |i|
-            if self.board[x+i, y+i].color == self.color
-                break
-            elsif self.board[x + i, y+i].color == opposite_color
-                diagonal << [x+i, y+i]
-                break
+        # max_coor = self.pos.max
+        # min_coor = self.pos.min
+        (1..7).each do |i|
+            if self.board.valid_pos?([x+i, y+i])
+                if self.board[x+i, y+i].color == self.color
+                    break
+                elsif self.board[x + i, y+i].color == opposite_color
+                    diagonal << [x+i, y+i]
+                    break
+                else
+                    diagonal << [x+i,y+i]
+                end
             else
-                diagonal << [x+i,y+i]
+                break
             end
         end
-        (max_coor + 1..7).each do |i|
-            if self.board[x-i,y-i].color == self.color
-                break
-            elsif self.board[x - i,y-i].color == opposite_color
-                diagonal << [x-i,y-i]
-                break
+        (1..7).each do |i|
+            if self.board.valid_pos?([x-i, y-i])
+                if self.board[x-i,y-i].color == self.color
+                    break
+                elsif self.board[x - i,y-i].color == opposite_color
+                    diagonal << [x-i,y-i]
+                    break
+                else
+                    diagonal << [x-i, y-i]
+                end
             else
-                diagonal << [x-i, y-i]
+                break
             end
         end
-        (x+1..7).each do |i|
-            if self.board[x+i,y-i].color == self.color
-                break
-            elsif self.board[x+i,y-i].color == opposite_color
-                diagonal << [x+i, y-i]
-                break
+        (1..7).each do |i|
+            if self.board.valid_pos?([x+i, y-i])
+                if self.board[x+i,y-i].color == self.color
+                    break
+                elsif self.board[x+i,y-i].color == opposite_color
+                    diagonal << [x+i, y-i]
+                    break
+                else
+                    diagonal << [x+i,y-i]
+                end
             else
-                diagonal << [x+i,y-i]
+                break
             end
         end
-        (y+1..7).each do |i|
-            if self.board[x-i,y+i].color == self.color
-                break
-            elsif self.board[x-i,y+i].color == opposite_color
-                diagonal << [x-i,y+i]
-                break
+        (1..7).each do |i|
+            if self.board.valid_pos?([x-i, y+i])
+                if self.board[x-i,y+i].color == self.color
+                    break
+                elsif self.board[x-i,y+i].color == opposite_color
+                    diagonal << [x-i,y+i]
+                    break
+                else
+                    diagonal << [x-i,y+i]
+                end
             else
-                diagonal << [x-i,y+i]
+                break
             end
         end
         
@@ -97,7 +114,7 @@ module Slideable
             if direction == :horz
                 moves += horizontal
             elsif direction == :vert
-                moves += veritcal
+                moves += vertical
             elsif direction == :diag
                 moves += diagonal
             end
