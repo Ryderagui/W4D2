@@ -7,6 +7,10 @@ class NullPiece < Piece
         @color = :green
     end
 
-    attr_reader :symbol
+    def moves
+        []
+    end
+
+    attr_reader :symbol, :color
 
 end

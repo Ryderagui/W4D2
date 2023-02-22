@@ -62,6 +62,7 @@ class Board
         # piece = self.[](start_pos)
         # piece.pos = end_pos
         true
+        self[w,z].pos = [w,z]
     end
 
     def valid_pos?(pos)
@@ -81,10 +82,29 @@ class Board
     end
 
     def in_check?(color)
+        opposite_color = color == :black ? :white : :black
+        king_pos = self.find_king(color)
+        @grid.each do |row|
+            row.each do |ele|
+                if ele.moves.include?(king_pos) && !ele.is_a?(Pawn) && ele.color == opposite_color 
+                    return true
+                elsif ele.is_a?(Pawn) && ele.side_attacks.include?(king_pos) && ele.color == opposite_color
+                    return true
+                end
+            end
+        end
+        return false
     end
 
     def find_king(color)
         #Loop through all positions, find piece thats a king of input color
+        @grid.each do |row|
+            row.each do |ele|
+                if ele.is_a?(King) && ele.color == color
+                    return ele.pos
+                end
+            end 
+        end
     end
 
     def pieces
@@ -101,10 +121,17 @@ end
 
 if $PROGRAM_NAME == __FILE__
     nb = Board.new
-    nb.move_piece(:white,[1,4],[3,4])
-    q = nb[0,3]
-    # p q.moves
-    b = nb[0,5]
-    # p b.moves
-
+    # d = Display.new(nb)
+    nb.move_piece(:black,[1,3],[3,3])
+    nb.move_piece(:white, [7,5],[3,1])
+    piece = nb[3,1]
+    p nb
+    # d.render
+    p piece
+    p piece.pos
+    p piece.moves
+    # q = nb[0,3]
+    # b = nb[0,5]
+    p nb.in_check?(:white)
+    p nb.in_check?(:black)
 end

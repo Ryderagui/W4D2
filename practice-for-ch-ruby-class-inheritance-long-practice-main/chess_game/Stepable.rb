@@ -11,12 +11,14 @@ module Stepable
         deltas.each do |move|
             row,col = move
             w,z = [row + x, col + y]
-            if self.board[w,z].color == self.color
-                next
-            elsif self.board[w,z].color != self.color
-                possible_moves << [w,z]
-            elsif self.board[w,z].color == nil
-                possible_moves << [w,z]
+            if self.board.valid_pos?([w,z])
+                if self.board[w,z].color == self.color
+                    next
+                elsif self.board[w,z].color != self.color
+                    possible_moves << [w,z]
+                elsif self.board[w,z].color == nil
+                    possible_moves << [w,z]
+                end
             end
         end
 

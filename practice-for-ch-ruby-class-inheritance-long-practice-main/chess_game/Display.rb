@@ -11,24 +11,21 @@ class Display
 
     def render
         #We want to print out board
-        @board.grid.each do |row|
+        @board.grid.each_with_index do |row,i|
            row_letters = []
-           row.each do |ele|
+           row.each_with_index do |ele,j|
             # debugger
-            if ele.pos == @cursor.cursor_pos
-                new_string = ele.to_s.colorize(:red)
+            if @cursor.cursor_pos == [i,j]
+                color = @cursor.selected == true ? :blue : :red
+                new_string = ele.to_s.colorize(color)
                 row_letters << new_string
-            elsif @board[@cursor.cursor_pos[0],@cursor.cursor_pos[1]].empty? && ele.is_a?(NullPiece)
-                new_string = ele.to_s.colorize(:red)
+            else
+                new_string = ele.to_s.colorize(ele.color)
                 row_letters << new_string
-            else 
-                string = ele.to_s.colorize(ele.color)
-                row_letters << string 
             end
            end
            puts row_letters.join(" ")
         end
-
     end
 
     def test_display

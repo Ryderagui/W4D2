@@ -1,4 +1,5 @@
 require_relative "Piece.rb"
+require "byebug"
 
 class Pawn < Piece
     def initialize(color, board, pos)
@@ -14,19 +15,27 @@ class Pawn < Piece
         x,y = self.pos
         opposite_color = self.color == :black ? :white : :black
         if self.color == :white
-            if self.board[x-1,y-1].color == opposite_color
-                possible_moves << [x-1,y-1]
+            if self.board.valid_pos?([x-1,y-1])
+                if self.board[x-1,y-1].color == opposite_color
+                    possible_moves << [x-1,y-1]
+                end
             end
-            if self.board[x-1,y+1].color == opposite_color
-                possible_moves << [x-1,y+1]
+            if self.board.valid_pos?([x-1,y+1])
+                if self.board[x-1,y+1].color == opposite_color
+                    possible_moves << [x-1,y+1]
+                end
             end
         end
         if self.color == :black
-            if self.board[x+1,y+1].color == opposite_color
-                possible_moves << [x+1,y+1]
+            if self.board.valid_pos?([x+1,y+1])
+                if self.board[x+1,y+1].color == opposite_color && 
+                    possible_moves << [x+1,y+1]
+                end
             end
-            if self.board[x+1,y-1].color == opposite_color
-                possible_moves << [x+1,y-1]
+            if  self.board.valid_pos?([x+1,y-1])
+                if self.board[x+1,y-1].color == opposite_color
+                    possible_moves << [x+1,y-1]
+                end
             end
         end
         return possible_moves
