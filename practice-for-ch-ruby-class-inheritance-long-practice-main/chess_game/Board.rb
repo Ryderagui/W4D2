@@ -67,6 +67,26 @@ class Board
         raise "That piece cannot go there" if !valid_pos?(end_pos)
         if self[x,y].color != color
             return 
+        end
+        if !self[x,y].valid_moves.include?(end_pos)
+            return 
+        end
+    
+        self[w,z] = self[x,y]
+        self[x,y] = @null_piece
+        # piece = self.[](start_pos)
+        # piece.pos = end_pos
+        true
+        self[w,z].pos = [w,z]
+    end
+
+    def move_piece!(color,start_pos,end_pos)
+        x,y = start_pos 
+        w,z = end_pos
+        raise "Empty Square" if self.[](x,y) == nil
+        raise "That piece cannot go there" if !valid_pos?(end_pos)
+        if self[x,y].color != color
+            return 
         end 
 
         self[w,z] = self[x,y]
@@ -94,9 +114,6 @@ class Board
             row.each do |piece|
                 if piece.color == color
                     if !piece.valid_moves.empty?
-                        p piece.pos
-                        p piece.valid_moves
-                        p piece
                         return false
                     end
                 end
@@ -169,15 +186,12 @@ end
 if $PROGRAM_NAME == __FILE__
     nb = Board.new
     # # d = Display.new(nb)
-    nb.move_piece(:white,[6,5],[5,5])
-    nb.move_piece(:white,[6,6], [4,6])
-    nb.move_piece(:black, [1,4],[2,4])
-    nb.move_piece(:black, [0,3],[4,7])
-    p nb.checkmate?(:white)
-    p nb
-    p pawn = nb[6,7]
+    nb.move_piece!(:black, [0,2],[5,7])
+    pawn = nb[6,6]
+    p pawn
     p pawn.moves
-    p pawn.valid_moves
+    p nb.move_piece(:white,[6,6],[5,7])
+    p nb
     # p piece
     # p piece.pos
     # p piece.moves

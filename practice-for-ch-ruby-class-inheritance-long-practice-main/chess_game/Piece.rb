@@ -43,7 +43,7 @@ class Piece
         possible_moves = self.moves
         possible_moves.each do |move|
             copy = self.board.dup
-            copy.move_piece(self.color,self.pos,move)
+            copy.move_piece!(self.color,self.pos,move)
             valids << move if !copy.in_check?(self.color)
         end
         valids

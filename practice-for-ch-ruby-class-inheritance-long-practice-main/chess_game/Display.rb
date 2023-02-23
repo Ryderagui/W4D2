@@ -3,6 +3,7 @@ require_relative "Board.rb"
 require_relative "Cursor.rb"
 require "byebug"
 class Display
+    attr_reader :cursor, :board
     def initialize(board)
         @cursor = Cursor.new([0,0],board)
         @board = board
@@ -31,7 +32,7 @@ class Display
     def test_display
         while true
             self.render
-        @cursor.get_input
+            @cursor.get_input
         end
     end
 

@@ -18,24 +18,24 @@ class Pawn < Piece
         if self.color == :white
             if self.board.valid_pos?([x-1,y-1])
                 if self.board[x-1,y-1].color == opposite_color
-                    possible_moves << [x-1,y-1]
+                    possible_moves += [x-1,y-1]
                 end
             end
             if self.board.valid_pos?([x-1,y+1])
                 if self.board[x-1,y+1].color == opposite_color
-                    possible_moves << [x-1,y+1]
+                    possible_moves += [x-1,y+1]
                 end
             end
         end
         if self.color == :black
             if self.board.valid_pos?([x+1,y+1])
                 if self.board[x+1,y+1].color == opposite_color && 
-                    possible_moves << [x+1,y+1]
+                    possible_moves += [x+1,y+1]
                 end
             end
             if  self.board.valid_pos?([x+1,y-1])
                 if self.board[x+1,y-1].color == opposite_color
-                    possible_moves << [x+1,y-1]
+                    possible_moves += [x+1,y-1]
                 end
             end
         end
